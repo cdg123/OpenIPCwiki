@@ -19,19 +19,20 @@ This article is a record of the steps taken to try and reverse engineer an IP ca
 This is definately work in progress and if nothing else it may help you with your own projects
 
 ## Device info
-| System | Description | Comments | 
+| System | Description | Comments |
 |-|-|-|
+|Hankvision|V6202 IR-IMX335|-|
 | SoC | GK7205V300 | |
-| Flash | XMC XM25QH64CHIQ | 16MB |
-| Sensor | Sony IMX533 | - |
+| Flash | XMC XM25QH128C | Nor 16MB |
+| Sensor | Sony IMX335 | i2c 0x34 |
 | Audio | MIC + SPK | |
 | Storage | Micro SD | |
-| LAN | - | - |
+| Memory | - | 128M (Media 80M) |
+| LAN | - | eth0 |
 | WiFi | - | - |
 | Motors | 2x Stepper | - |
 | Dimensions | - | |
-
-\* - reported by ipctool
+| Bootload address | 0x41000000 | - |
 
 
 ## Steps so far:
@@ -83,8 +84,13 @@ This is definately work in progress and if nothing else it may help you with you
 43) Can we umount the flash card to right to it if that is the root-fs. If not swap the bootargs and make changes then put back
 44) So without camera software running watchall app I assume kicks everything off we can remotely telnet in but ip address is changed when server software loads.
 45) Need to check the init scripts to make sure network etc come up as without nfs this is not done automagically
-46) 
+46) Cam ip changes when server loaded as weel as root password
+47) Need to be careful with IP address changes as can cause arp problems with duplicate ip if not careful using random MAC address a6:94:2f:54:b2:ce
+48) So cam now refusing to boot to flash card so will burn again
+49) Try mounting nfs to nfsroot can we swap root-fs to there ??
 
+
+ mount -o nolock,tcp 192.168.1.222:/srv/gokenfs /nfsroot
 
 
 
@@ -135,7 +141,7 @@ This is definately work in progress and if nothing else it may help you with you
 | 70 | - | SD PWR (LO - Power ON) |
 | 51 | - | AUDIO AMP |
 
-\* - unconfirmed.
+
 
 ## Muxing
 No muxing required if Majestic takes control over pins. Otherwise, muxing can be done using the following commands.
